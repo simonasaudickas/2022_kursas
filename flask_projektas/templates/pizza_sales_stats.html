@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Pizza sales</h1>
+<canvas id="lineChart" width="700" height="400"></canvas>
+<script>
+var ctx = document.getElementById('lineChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{labels | safe}},
+        datasets: [{
+            label: '# of Sales',
+            data: {{values | safe}},
+            backgroundColor:
+                'rgb(100, 50, 132)',
+            fill: false,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true
+
+    }
+});
+</script>
+<h1>Random number count</h1>
+<canvas id="barChart" width="700" height="400"></canvas>
+<script>
+var ctx = document.getElementById('barChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["red", "green"],
+        datasets: [{
+            label: '# of Sales',
+            data: [2,3],
+            backgroundColor:
+                ['rgb(200, 50, 50)','rgb(200, 80, 132)'],
+            fill: true,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+</script>
+{% endblock %}

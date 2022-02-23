@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Straipsniai</h1>
+<br>
+{% for vienetas in data %}
+<h3>{{vienetas['pavadinimas']}}</h3>
+<p>{{vienetas['autorius']}}, <i>'{{vienetas['data']}}</i></p>
+<br>
+<p>{{vienetas ['tekstas']}}</p>
+<br>
+<hr>
+{% endfor %}
+
+{% endblock %}
