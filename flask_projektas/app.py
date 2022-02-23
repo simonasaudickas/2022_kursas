@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
 from dictionary import data
 import json
-from pizza_sales import picos_pardavimai
+#from pizza_sales import picos_pardavimai
 from datetime import date
 from forms import RegistracijosForma, PrisijungimoForma, ContactForm, RasytiStraipsni
 from flask_login import LoginManager, UserMixin, current_user, logout_user,login_user, login_required
@@ -16,8 +16,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Flask-WTF requires an enryption key - the string can be anything
 app.config['SECRET_KEY'] = 'MLXH243GssUWwKdTWS7FDhdwYF56wPj8'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir,'puslapiui.db')
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost/flasksql
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir,'puslapiui.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://simonas:kursas@localhost/kursas'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db=SQLAlchemy(app)
@@ -29,6 +29,7 @@ login_manager.login_message_category= 'info'
 
 
 class Vartotojas(db.Model, UserMixin):
+    __table_args__ = {"schema": "puslapiui"}
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key= True)
     vardas = db.Column("Vardas", db.String(20), unique=True, nullable=False)
@@ -36,6 +37,7 @@ class Vartotojas(db.Model, UserMixin):
     slaptazodis = db.Column("slaptazodis", db.String(60), unique=True, nullable=False)
 
 class Straipsniai(db.Model):
+    __table_args__ = {"schema": "puslapiui"}
     __tablename__ = 'straipsniai'
     id = db.Column(db.Integer, primary_key= True)
     autorius = db.Column("Autorius", db.String(20), unique=False, nullable=False)
@@ -50,6 +52,7 @@ def load_user(vartotojo_id):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    db.create_all()
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistracijosForma()
@@ -144,5 +147,5 @@ def useris():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)
     db.create_all()
