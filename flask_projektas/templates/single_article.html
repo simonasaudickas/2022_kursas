@@ -3,12 +3,12 @@
 {% block content %}
 
 {% for straipsnis in data %}
-{% if straipsnis['pavadinimas'] == title %}
+{% if straipsnis[2] == title %}
 
-<h1>{{ straipsnis['pavadinimas'] }}</h1>
-<p>{{ straipsnis['data'] }}, <i>{{ straipsnis['autorius'] }}</i></p>
+<h1>{{ straipsnis[2] }}</h1>
+<p>{{ straipsnis[1] }}, <i>{{ straipsnis[4] }}</i></p>
 <hr>
-<p>{{ straipsnis['tekstas'] }}</p>
+<p>{{ straipsnis[3] }}</p>
 <br><br>
 
 {% endif %}

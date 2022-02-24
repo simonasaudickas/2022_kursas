@@ -1,3 +1,15 @@
+import psycopg2
+import pandas as pd
+
+conn = psycopg2.connect(host='localhost', user='simonas', password='kursas', database='kursas')
+cur= conn.cursor()
+cur.execute("""select * from puslapiui.straipsniai""")
+#df= pd.DataFrame(cur.fetchall())
+str_duomenys = cur.fetchall()
+print(str_duomenys)
+
+
+
 data =[{
     'data':'2020 01 01',
     'autorius': 'Agata Kristie',

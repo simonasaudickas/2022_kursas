@@ -4,12 +4,13 @@
 <br>
 <br>
 {% for straipsnis in data %}
-<h3>{{straipsnis['pavadinimas']}}</h3>
-<p>{{straipsnis['autorius']}}, <i>'{{straipsnis['data']}}</i></p>
+<h3>{{straipsnis[2]}}</h3> <!-- pavadinimas -->
+<p>{{straipsnis[1]}}, <i>{{straipsnis[4]}}</i></p> <!-- praste: autorius ir data -->
 <br>
-<p>{{straipsnis ['tekstas'][:100]}}<a href="{{url_for('article', title=straipsnis['pavadinimas'])}}">..skaityti toliau</a></p>
+<p>{{straipsnis[3][:100]}}<a href="{{url_for('article', title=straipsnis[2])}}">..skaityti toliau</a></p> <!-- straipsnio santrauka -->
 <br>
 <hr>
+
 {% endfor %}
 
 {% endblock %}

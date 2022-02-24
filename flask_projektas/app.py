@@ -1,18 +1,18 @@
 from flask import Flask, request, render_template, redirect, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
-from dictionary import data
+from dictionary import data, str_duomenys
 import json
 #from pizza_sales import picos_pardavimai
 from datetime import date
 from forms import RegistracijosForma, PrisijungimoForma, ContactForm, RasytiStraipsni
 from flask_login import LoginManager, UserMixin, current_user, logout_user,login_user, login_required
 from flask_bcrypt import Bcrypt
-import os
+#import os
 #import duomenu_agregavimas
 
 app= Flask(__name__)
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+#basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Flask-WTF requires an enryption key - the string can be anything
 app.config['SECRET_KEY'] = 'MLXH243GssUWwKdTWS7FDhdwYF56wPj8'
@@ -35,6 +35,7 @@ class Vartotojas(db.Model, UserMixin):
     vardas = db.Column("Vardas", db.String(20), unique=True, nullable=False)
     el_pastas =db.Column("El.pastas", db.String(120), unique=False, nullable=False)
     slaptazodis = db.Column("slaptazodis", db.String(60), unique=True, nullable=False)
+    dta = db.Column("registered", db.Date, nullable=False)
 
 class Straipsniai(db.Model):
     __table_args__ = {"schema": "puslapiui"}
@@ -58,7 +59,7 @@ def register():
     form = RegistracijosForma()
     if form.validate_on_submit():
         hashed_pwd = bcrypt.generate_password_hash(form.slaptazodis.data).decode('utf-8')
-        vartotojas = Vartotojas(vardas=form.vardas.data, el_pastas = form.el_pastas.data, slaptazodis = hashed_pwd)
+        vartotojas = Vartotojas(vardas=form.vardas.data, el_pastas = form.el_pastas.data, slaptazodis = hashed_pwd, dta=datetime.today())
         db.session.add(vartotojas)
         db.session.commit()
         flash("sekmingai prisiregistravote. Galite prisijungti", 'success')
@@ -99,11 +100,14 @@ def account():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('article.html', data=data)
+    #autorius = [row[1] for row in str_duomenys]
+    #pavadinimas = [row[2] for row in str_duomenys]
+    #straipnis = [row[3] for row in str_duomenys]
+    return render_template('article.html', data=str_duomenys)
 
 @app.route('/<string:title>')
 def article(title):
-    return render_template('single_article.html', title=title, data=data)
+    return render_template('single_article.html', title=title, data=str_duomenys)
 
 @app.route('/add_article', methods=['GET','POST'])
 @login_required
@@ -112,7 +116,7 @@ def add_article():
     form = RasytiStraipsni()
     if form.validate_on_submit():
         straipsnis = Straipsniai(autorius=form.autorius.data, pavadinimas = form.pavadinimas.data, straipsnis =form.straipsnis.data, dt=date.today())
-        db.session.add(straipsnis)
+        db.session.merge(straipsnis)
         db.session.commit()
         flash("Sekmingai irasete straipsni.", 'success')
         return redirect(url_for('index'))
