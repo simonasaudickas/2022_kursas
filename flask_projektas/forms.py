@@ -37,3 +37,12 @@ class RasytiStraipsni(FlaskForm):
     pavadinimas = StringField('Pavadinimas', [DataRequired()])
     straipsnis = TextAreaField("Ivesti norima straipsnio teksta", [DataRequired(), Length(min=150, message='Per trumpas straipsnis.')])
     submit = SubmitField('Siusti')
+
+class PicosUzsakymoForma(FlaskForm):
+    klientas = StringField('Vardas pavarde', [DataRequired()])
+    pavadinimas = StringField('Picos pavadinimas', [DataRequired()])
+    telefonas = StringField('Kliento telefonas', [DataRequired()])
+    vegetariska = BooleanField("vegetariska")
+    pristatymas = BooleanField("Rekalingas pristatymas")
+    komentaras = TextAreaField("Irasykite komentara")
+    submit = SubmitField('Uzsakyti')

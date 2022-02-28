@@ -1,15 +1,32 @@
 import psycopg2
+import pandas as pd
+import datetime
+from sqlalchemy import create_engine
+
 
 conn = psycopg2.connect(
-    host="127.0.0.1",
-    database="LGL gr.2",
+    host="localhost",
+    database="kursas",
     user="simonas",
     password="kursas")
 c= conn.cursor()
-c.execute("select * from kursas.picu_pardavimai_csv")
+c.execute("select * from puslapiui.picu_pardavimai")
 picos_pardavimai=c.fetchall()
 #print(picos_pardavimai)
 
+df=pd.DataFrame(picos_pardavimai)
+header=(i[0] for i in c.description)
+df.columns=header
+total_sales=df['kiekis'].sum()
+average_sales= int(round(df['kiekis'].mean(),0))
+print(picos_pardavimai)
+
+df['dt'] = pd.to_datetime(df['dt']).dt.strftime("%Y-%m")
+picos= df.groupby(by=['dt']).sum()
+picos.reset_index(inplace=True)
+rec=picos.to_records(index=False)
+picos= list(rec)
+print(picos)
 
 
 

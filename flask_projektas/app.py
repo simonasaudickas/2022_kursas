@@ -1,13 +1,13 @@
-from flask import Flask, request, render_template, redirect, flash, url_for
+from flask import Flask, request, render_template, redirect, flash, url_for, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from dictionary import data, str_duomenys
 import json
-#from pizza_sales import picos_pardavimai
-from datetime import date
-from forms import RegistracijosForma, PrisijungimoForma, ContactForm, RasytiStraipsni
+from pizza_sales import picos, total_sales, average_sales
+from datetime import datetime, date
+from forms import RegistracijosForma, PrisijungimoForma, ContactForm, RasytiStraipsni, PicosUzsakymoForma
 from flask_login import LoginManager, UserMixin, current_user, logout_user,login_user, login_required
 from flask_bcrypt import Bcrypt
-#import os
+import os
 #import duomenu_agregavimas
 
 app= Flask(__name__)
@@ -45,6 +45,30 @@ class Straipsniai(db.Model):
     pavadinimas =db.Column("Pavadinimas", db.String(200), unique=True, nullable=False)
     straipsnis = db.Column("Straipsnis", db.String(3000), unique=True, nullable=False)
     dt = db.Column('publikuota',db.Date, nullable=False)
+
+class Picos(db.Model):
+    __table_args__ = {"schema": "puslapiui"}
+    __tablename__ = 'sales'
+    id = db.Column(db.Integer, primary_key= True)
+    pavadinimas = db.Column("pavadinimas", db.String(300), unique=True, nullable=False)
+    klientas =db.Column("klientas", db.String(30), unique=False, nullable=False)
+    telefonas = db.Column("telefonas", db.Integer, unique=True, nullable=False)
+    komentaras = db.Column("komentaras", db.String(100), unique=True, nullable=True)
+    pristatymas = db.Column("pristatymas", db.Boolean)
+    vegetariska = db.Column("vegetariska", db.Boolean)
+    dta = db.Column("uzsakyo_data", db.DateTime, nullable=False)
+
+@app.route('/picos_uzsakymas', methods=['GET', 'POST'])
+def picos_uzsakymas():
+    db.create_all()
+    form = PicosUzsakymoForma()
+    if form.validate_on_submit():
+        uzsakymas = Picos(klientas=form.klientas.data, pavadinimas=form.pavadinimas.data, telefonas=form.telefonas.data, pristatymas=form.pristatymas.data, vegetariska=form.vegetariska.data, komentaras=form.komentaras.data, dta=datetime.now())
+        db.session.add(uzsakymas)
+        db.session.commit()
+        flash("sekmingai uzsisakete picos", 'success')
+    return render_template('picos_uzsakymas.html', form=form)
+
 
 
 @login_manager.user_loader
@@ -138,9 +162,10 @@ def about():
 
 @app.route('/pizza_sales')
 def pizza_sales():
-    labels = [row[0] for row in picos_pardavimai]
-    values = [row[1] for row in picos_pardavimai]
-    return render_template('pizza_sales_stats.html', labels=labels, values=values)
+
+    labels = [row[0] for row in picos]
+    values = [row[1] for row in picos]
+    return render_template('pizza_sales_stats.html', labels=labels, values=values, total=total_sales, avg=average_sales)
 
 
 """
@@ -148,7 +173,9 @@ def pizza_sales():
 def useris():
     return render_template('user.html')
 """
-
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path,'static'),'mercury.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)

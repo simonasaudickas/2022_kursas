@@ -1,6 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Pizza sales</h1>
+<div class="container">
+  <div class="row">
+    <div class="col" align="center">
+      <div class="card" style="width: 22rem;">
+        <div class="card-body">
+        <h5 class="card-title">Total pizza sales</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Sales count//Revenue</h6>
+        <h1 class="card-text" ALIGN="center">{{total}} // {{total*8}}</h1>
+        </div>
+    </div>
+    </div>
+    <div class="col" align="center">
+      <div class="card" style="width: 22rem;">
+        <div class="card-body">
+        <h5 class="card-title">Average amount sold per day</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Avera sales // Revenue</h6>
+        <h1 class="card-text" ALIGN="center">{{avg}} // {{avg*8}}</h1>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<br><br>
+
+<h1 align="center">Pizza sales</h1>
+
 <canvas id="lineChart" width="700" height="400"></canvas>
 <script>
 var ctx = document.getElementById('lineChart').getContext('2d');
@@ -45,4 +70,5 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
+<iframe src="https://www.youtube.com/watch?v=ZpkuhGqairU" allowfullscreen="" width="100%" frameborder="0"></iframe>
 {% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Picos uzsakymas</legend>
+                <div class="form-group">
+                    {{ form.klientas.label(class="form-control-label") }}
+                    {% if form.klientas.errors %}
+                        {{ form.klientas(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.klientas.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.klientas(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.pavadinimas.label(class="form-control-label") }}
+                    {% if form.pavadinimas.errors %}
+                        {{ form.pavadinimas(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.pavadinimas.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.pavadinimas(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.telefonas.label(class="form-control-label") }}
+                    {% if form.telefonas.errors %}
+                        {{ form.telefonas(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.telefonas.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.telefonas(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-check">
+                    {{ form.pristatymas(class="form-check-input") }}
+                    {{ form.pristatymas.label(class="form-check-label") }}
+                </div>
+                <div class="form-check">
+                    {{ form.vegetariska(class="form-check-input") }}
+                    {{ form.vegetariska.label(class="form-check-label") }}
+                </div>
+                <div class="form-group">
+                      {{ form.komentaras.label(class="form-control-label") }}
+                      {{ form.komentaras(class="form-control", rows="5") }}
+      </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+<!--            Already Have An Account? <a class="ml-2" href="{{ url_for('index') }}">Sign In</a>-->
+        </small>
+    </div>
+{% endblock content %}
