@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash, url_for, send_from_directory
+from flask import Flask, request, render_template, redirect, flash, url_for, send_from_directory, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from dictionary import data, str_duomenys
 import json
@@ -68,6 +68,31 @@ def picos_uzsakymas():
         db.session.commit()
         flash("sekmingai uzsisakete picos", 'success')
     return render_template('picos_uzsakymas.html', form=form)
+
+
+@app.route('/kalendorius', methods=['GET', 'POST'])
+def kalendorius():
+    return render_template('calendar.html')
+
+@app.route('/calendar-events')
+def calendar_events():
+	conn = None
+	cursor = None
+	try:
+		conn = psycopg2.connect()
+		cursor = conn.cursor()
+		cursor.execute("SELECT id, title, url, class, UNIX_TIMESTAMP(start_date)*1000 as start, UNIX_TIMESTAMP(end_date)*1000 as end FROM event")
+		rows = cursor.fetchall()
+		resp = jsonify({'success' : 1, 'result' : rows})
+		resp.status_code = 200
+		return resp
+	except Exception as e:
+		print(e)
+	finally:
+		pass
+
+
+
 
 
 
@@ -175,7 +200,7 @@ def useris():
 """
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(app.root_path,'static'),'mercury.ico', mimetype='image/vnd.microsoft.icon')
+    return send_from_directory(os.path.join(app.root_path,'static'),'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)

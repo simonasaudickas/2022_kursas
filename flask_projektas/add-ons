@@ -1,20 +1,9 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col">
-      left column
-    </div>
-    <div class="col-6">
-      Content
-    </div>
-    <div class="col">
-      <div class="content-section">
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Prisijunkite</legend>
-                <div class="form-group">
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+
+
+        <div class="form-group">
                     {{ form.el_pastas.label(class="form-control-label") }}
                     {% if form.el_pastas.errors %}
                         {{ form.el_pastas(class="form-control form-control-lg is-invalid") }}
@@ -40,23 +29,16 @@
                         {{ form.slaptazodis(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <div class="form-check">
-                    {{ form.prisiminti(class="form-check-input") }}
-                    {{ form.prisiminti.label(class="form-check-label") }}
+                <div class="form-group">
+                    {{ form.patvirtintas_slaptazodis.label(class="form-control-label") }}
+                    {% if form.patvirtintas_slaptazodis.errors %}
+                        {{ form.patvirtintas_slaptazodis(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.patvirtintas_slaptazodis.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.patvirtintas_slaptazodis(class="form-control form-control-lg") }}
+                    {% endif %}
                 </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
-            </div>
-        </form>
-    </div>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-           Already Have An Account? <a class="ml-2" href="{{ url_for('register') }}">Sign In</a>
-        </small>
-    </div>
-    </div>
-  </div>
-</div>
-
-{% endblock content %}

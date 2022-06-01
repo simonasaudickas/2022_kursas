@@ -9,4 +9,4 @@ headers = {
     }
 
 response = requests.request("GET", url, headers=headers).text
-print(response)
+#print(response)

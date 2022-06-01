@@ -39,7 +39,8 @@ var myChart = new Chart(ctx, {
             backgroundColor:
                 'rgb(100, 50, 132)',
             fill: false,
-            borderWidth: 1
+            borderWidth: 5,
+            tension: 0.1
         }]
     },
     options: {
@@ -63,6 +64,7 @@ var myChart = new Chart(ctx, {
                 ['rgb(200, 50, 50)','rgb(200, 80, 132)'],
             fill: true,
             borderWidth: 1
+
         }]
     },
     options: {
@@ -70,5 +72,5 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
-<iframe src="https://www.youtube.com/watch?v=ZpkuhGqairU" allowfullscreen="" width="100%" frameborder="0"></iframe>
+
 {% endblock %}

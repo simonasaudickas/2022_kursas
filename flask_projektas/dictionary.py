@@ -6,7 +6,7 @@ cur= conn.cursor()
 cur.execute("""select * from puslapiui.straipsniai""")
 #df= pd.DataFrame(cur.fetchall())
 str_duomenys = cur.fetchall()
-print(str_duomenys)
+#print(str_duomenys)
 
 
 

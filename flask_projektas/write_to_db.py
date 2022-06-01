@@ -18,4 +18,6 @@ conn = psycopg2.connect(
 c= conn.cursor()
 c.execute("select * from puslapiui.picu_pardavimai")
 picos_pardavimai=c.fetchall()
-print(picos_pardavimai)
+
+if __nane__=='__main__':
+    print(picos_pardavimai)
