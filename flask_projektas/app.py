@@ -8,6 +8,10 @@ from forms import RegistracijosForma, PrisijungimoForma, ContactForm, RasytiStra
 from flask_login import LoginManager, UserMixin, current_user, logout_user,login_user, login_required
 from flask_bcrypt import Bcrypt
 import os
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+from flask_admin.menu import MenuLink
+from flask_migrate import Migrate
 #import duomenu_agregavimas
 
 app= Flask(__name__)
@@ -20,7 +24,10 @@ app.config['SECRET_KEY'] = 'MLXH243GssUWwKdTWS7FDhdwYF56wPj8'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://simonas:kursas@localhost/kursas'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+admin = Admin (app, name= 'Control Panel', template_mode='bootstrap3')
+
 db=SQLAlchemy(app)
+migrate=Migrate(app, db, include_schemas=True, compare_type=True)
 bcrypt = Bcrypt(app)
 
 login_manager = LoginManager(app)
@@ -36,6 +43,7 @@ class Vartotojas(db.Model, UserMixin):
     el_pastas =db.Column("El.pastas", db.String(120), unique=False, nullable=False)
     slaptazodis = db.Column("slaptazodis", db.String(60), unique=True, nullable=False)
     dta = db.Column("registered", db.Date, nullable=False)
+    role =db.Column('admin_role', db.String(40), nullable=False, default='vartotojas')
 
 class Straipsniai(db.Model):
     __table_args__ = {"schema": "puslapiui"}
@@ -58,6 +66,17 @@ class Picos(db.Model):
     vegetariska = db.Column("vegetariska", db.Boolean)
     dta = db.Column("uzsakyo_data", db.DateTime, nullable=False)
 
+class Controller(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated
+    def not_auth(self):
+        return "you do not have permission to access the page"
+
+admin.add_view(Controller(Vartotojas, db.session))
+admin.add_view(Controller(Straipsniai, db.session))
+admin.add_view(Controller(Picos, db.session))
+admin.add_link(MenuLink(name='Pradzia', url='/', category=''))
+
 @app.route('/picos_uzsakymas', methods=['GET', 'POST'])
 def picos_uzsakymas():
     db.create_all()
@@ -73,25 +92,6 @@ def picos_uzsakymas():
 @app.route('/kalendorius', methods=['GET', 'POST'])
 def kalendorius():
     return render_template('calendar.html')
-
-@app.route('/calendar-events')
-def calendar_events():
-	conn = None
-	cursor = None
-	try:
-		conn = psycopg2.connect()
-		cursor = conn.cursor()
-		cursor.execute("SELECT id, title, url, class, UNIX_TIMESTAMP(start_date)*1000 as start, UNIX_TIMESTAMP(end_date)*1000 as end FROM event")
-		rows = cursor.fetchall()
-		resp = jsonify({'success' : 1, 'result' : rows})
-		resp.status_code = 200
-		return resp
-	except Exception as e:
-		print(e)
-	finally:
-		pass
-
-
 
 
 
