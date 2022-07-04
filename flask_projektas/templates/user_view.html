@@ -95,8 +95,8 @@ body{
            <!--profile image & text-->
             <div class="profile">
                 <img src="https://1.bp.blogspot.com/-vhmWFWO2r8U/YLjr2A57toI/AAAAAAAACO4/0GBonlEZPmAiQW4uvkCTm5LvlJVd_-l_wCNcBGAsYHQ/s16000/team-1-2.jpg" alt="profile_picture">
-                <h3>Anamika Roy</h3>
-                <p>Designer</p>
+                <h3>{{}}</h3>
+                <p>Rolė: {{current_user.role}}</p>
             </div>
 
             <!--menu item-->
@@ -138,10 +138,12 @@ body{
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    {%if current_user.role=='administratorius'%}
+                    <a href="/admin">
                         <span class="icon"><i class="fas fa-user-shield"></i></span>
-                        <span class="item">Admin</span>
+                        <span class="item">{{current_user.role}}</span>
                     </a>
+                    {%endif%}
                 </li>
                 <li>
                     <a href="#">
@@ -154,6 +156,7 @@ body{
         </div>
 
     </div>
+<div class="container"
   <script>
 
   </script>
