@@ -221,7 +221,12 @@ def user():
 
 @app.route('/profile/videos')
 def videos():
-    return render_template('videos.html')
+    db.create_all()
+    try:
+        visi_video = Video.query.filter_by(vartotojas_id=current_user.id).all()
+    except:
+        visi_video = []
+    return render_template("videos.html", visi_video=visi_video)
 
 @app.route('/profile/docs')
 def docs():
