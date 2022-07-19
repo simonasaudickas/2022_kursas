@@ -192,7 +192,7 @@ def add_video():
         db.session.add(naujas_video)
         db.session.commit()
         flash(f"Įrašas sukurtas", 'success')
-        return redirect(url_for('profile'))
+        return redirect(url_for('account'))
     return render_template("add_video.html", form=forma)
 
 @app.route('/contact_us', methods=['GET', 'POST'])
