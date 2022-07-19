@@ -72,7 +72,7 @@ class Video(db.Model):
     __tablename__ = 'video'
     id = db.Column(db.Integer, primary_key= True)
     video_kodas = db.Column('kodas', db.String(50), unique=True, nullable=False)
-    vartotojas_id = db.Column(db.Integer, db.ForeignKey('vartotojas.id'))
+    vartotojas_id = db.Column(db.Integer, db.ForeignKey('puslapiui.vartotojas.id'))
     vartotojas = db.relationship('Vartotojas', lazy=True)
     dt = db.Column('publikuota',db.Date, nullable=False)
 
