@@ -192,6 +192,17 @@ def pizza_sales():
     values = [row[1] for row in picos]
     return render_template('pizza_sales_stats.html', labels=labels, values=values, total=total_sales, avg=average_sales)
 
+@app.route("/user")
+def user():
+    return render_template('user_view.html', title="Vartotojo meniu")
+
+@app.route('/profile/videos')
+def videos():
+    return render_template('videos.html')
+
+@app.route('/profile/docs')
+def docs():
+    return render_template('docs.html')
 
 """
 @app.route('/about/'+vardas+'-'+pavarde)

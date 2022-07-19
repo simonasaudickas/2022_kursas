@@ -1,9 +1,14 @@
 {% extends "base.html" %}
+
+{%block left%}
+<p>some stupid shit is going on here checking the major isssue</p>
+  {%endblock left%}
+
 {% block content %}
 <div class="container">
   <div class="row">
     <div class="col" align="center">
-      <div class="card" style="width: 22rem;">
+      <div class="card" style="width: 20rem;">
         <div class="card-body">
         <h5 class="card-title">Total pizza sales</h5>
         <h6 class="card-subtitle mb-2 text-muted">Sales count//Revenue</h6>
@@ -12,7 +17,7 @@
     </div>
     </div>
     <div class="col" align="center">
-      <div class="card" style="width: 22rem;">
+      <div class="card" style="width: 20rem;">
         <div class="card-body">
         <h5 class="card-title">Average amount sold per day</h5>
         <h6 class="card-subtitle mb-2 text-muted">Avera sales // Revenue</h6>
@@ -74,3 +79,12 @@ var myChart = new Chart(ctx, {
 </script>
 
 {% endblock %}
+{%block right%}
+
+<br>
+<h4>Administravimui</h4>
+<a href="{{url_for('add_article')}}">Rašyti straipsnį</a>
+<hr>
+<a href = "{{url_for('picos_uzsakymas')}}">Uzsakyti pica</a>
+
+{%endblock right%}

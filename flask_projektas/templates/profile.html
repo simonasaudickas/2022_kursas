@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {%block left%}
 <br>
 <h4>Tavo profilis</h4>
@@ -12,6 +13,16 @@
 <p>Role : {{current_user.role}}</p>
 <a href="/admin">Admin panele</a>
 {%endif%}
+<ul>
+                <li>
+                    <a href="/" class="active">
+                        <span class="icon"><i class="fas fa-home"></i></span>
+                        <span class="item">Home</span>
+                    </a>
+                </li>
+                <li>
+                </li>
+</ul>
 {%endblock left%}
 
 
@@ -19,12 +30,12 @@
 <br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Active</a>
+    <a class="nav-link active" aria-current="page" href="/profile">Active</a>
   </li>
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Dropdown</a>
+    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Action</a></li>
+	    <li><a class="dropdown-item" href="/profile/docs">Documents</a></li>
       <li><a class="dropdown-item" href="#">Another action</a></li>
       <li><a class="dropdown-item" href="#">Something else here</a></li>
       <li><hr class="dropdown-divider"></li>
@@ -32,19 +43,17 @@
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link" href="/profile/videos">Videos</a>
   </li>
   <li class="nav-item">
     <a class="nav-link disabled">Disabled</a>
   </li>
 </ul>
-<iframe align="left" src="https://www.youtube.com/embed/ZpkuhGqairU" allowfullscreen="" width="100%" height="400px" frameborder="0">Video</iframe>
-<br>
-<hr>
 
-<br>
-<iframe align="left" src="https://docs.google.com/document/d/128PNQ3p8hxePydL6KNW2ll3FqLeFWvS6ffPbCDZqmQU/edit?usp=sharing" allowfullscreen="" width="100%" height="500px" frameborder="0">Google Docs dokumentas</iframe>
-
+{%block videos%}
+{%endblock videos%}
+{%block docs%}
+{%endblock docs%}
 {% endblock %}
 
 
