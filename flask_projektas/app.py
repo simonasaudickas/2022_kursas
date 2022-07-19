@@ -4,7 +4,7 @@ from dictionary import data, str_duomenys
 import json
 from pizza_sales import picos, total_sales, average_sales
 from datetime import datetime, date
-from forms import RegistracijosForma, PrisijungimoForma, ContactForm, RasytiStraipsni, PicosUzsakymoForma
+from forms import RegistracijosForma, PrisijungimoForma, ContactForm, RasytiStraipsni, PicosUzsakymoForma, VideoUploadForma
 from flask_login import LoginManager, UserMixin, current_user, logout_user,login_user, login_required
 from flask_bcrypt import Bcrypt
 import os
@@ -65,6 +65,16 @@ class Picos(db.Model):
     pristatymas = db.Column("pristatymas", db.Boolean)
     vegetariska = db.Column("vegetariska", db.Boolean)
     dta = db.Column("uzsakyo_data", db.DateTime, nullable=False)
+
+
+class Video(db.Model):
+    __table_args__ = {"schema": "puslapiui"}
+    __tablename__ = 'video'
+    id = db.Column(db.Integer, primary_key= True)
+    video_kodas = db.Column("kodas", db.String(50), unique=True, nullable=False)
+    vartotojas_id = db.Column(db.Integer, db.ForeignKey("vartotojas.id"))
+    vartotojas = db.relationship("Vartotojas", lazy=True)
+    dt = db.Column('publikuota',db.Date, nullable=False)
 
 class Controller(ModelView):
     def is_accessible(self):
@@ -171,6 +181,19 @@ def add_article():
         return redirect(url_for('index'))
     return render_template("add_article.html", form=form)
 
+
+@app.route('/add_video', methods=['GET','POST'])
+@login_required
+def add_video():
+    db.create_all()
+    forma = VideoUploadForma()
+    if forma.validate_on_submit():
+        naujas_video = Video(video_kodas=forma.code.data, vartotojas_id=current_user.id, dt=date.today())
+        db.session.add(naujas_video)
+        db.session.commit()
+        flash(f"Įrašas sukurtas", 'success')
+        return redirect(url_for('/profile/videos'))
+    return render_template("add_video.html", form=forma)
 
 @app.route('/contact_us', methods=['GET', 'POST'])
 def contact_us():

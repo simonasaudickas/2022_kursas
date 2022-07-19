@@ -46,3 +46,7 @@ class PicosUzsakymoForma(FlaskForm):
     pristatymas = BooleanField("Rekalingas pristatymas")
     komentaras = TextAreaField("Irasykite komentara")
     submit = SubmitField('Uzsakyti')
+
+class VideoUploadForma(FlaskForm):
+    code = StringField("Kodas", [DataRequired()])
+    submit = SubmitField('Irasyti')
