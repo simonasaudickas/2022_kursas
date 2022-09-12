@@ -16,8 +16,15 @@ conn = psycopg2.connect(
     user="simonas",
     password="kursas")
 c= conn.cursor()
-c.execute("select * from puslapiui.picu_pardavimai")
+c.execute("select * from puslapiui.video")
 picos_pardavimai=c.fetchall()
+def get_videos(id):
+    cur = c
+    cur.execute("select * from puslapiui.video where vartotojas_id = {}".format(id))
+    #print(cur.fetchall())
+    return cur.fetchall()
 
-if __nane__=='__main__':
-    print(picos_pardavimai)
+
+if __name__=='__main__':
+    #print(picos_pardavimai)
+    print(get_videos(10))

@@ -12,6 +12,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.menu import MenuLink
 from flask_migrate import Migrate
+from write_to_db import get_videos
 #import duomenu_agregavimas
 
 app= Flask(__name__)
@@ -71,7 +72,7 @@ class Video(db.Model):
     __table_args__ = {"schema": "puslapiui"}
     __tablename__ = 'video'
     id = db.Column(db.Integer, primary_key= True)
-    video_kodas = db.Column('kodas', db.String(50), unique=True, nullable=False)
+    video_kodas = db.Column("kodas", db.String(50), unique=False, nullable=False)
     vartotojas_id = db.Column(db.Integer, db.ForeignKey('puslapiui.user.id'))
     vartotojas = db.relationship('Vartotojas', lazy=True)
     dt = db.Column('publikuota',db.Date, nullable=False)
@@ -221,11 +222,9 @@ def user():
 
 @app.route('/profile/videos')
 def videos():
-    db.create_all()
-    try:
-        visi_video = Video.query.filter_by(vartotojas_id=current_user.id).all()
-    except:
-        visi_video = []
+    visi_video= get_videos(current_user.id)
+
+    print(visi_video)
     return render_template("videos.html", visi_video=visi_video)
 
 @app.route('/profile/docs')

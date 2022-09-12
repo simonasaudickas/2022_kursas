@@ -2,10 +2,19 @@
 
 {%block videos%}
 <br>
-<div class="row">
-	<div class="col" align="center">
-<iframe align="center" src="https://www.youtube.com/embed/yehcnSuMoUU" allowfullscreen="" width="700px" height="400px" frameborder="0">Video</iframe>
+<div class="embed-responsive embed-responsive-16by9">
+	<div class="row" align="center">
+	<iframe align ="center" src= "http://78.56.90.171:8080/picture/1/frame/" allowfullscreen=""></iframe>
 	</div>
+</div>
+	<br>
+	<hr>
+<div class="embed-responsive embed-responsive-16by9">
+
+	<div class="row">
+	<iframe align="center" src="https://www.youtube.com/embed/yehcnSuMoUU" allowfullscreen="">Video</iframe>
+	</div>
+
 </div>
 <br>
 <hr>
@@ -18,11 +27,13 @@
 <br>
 <hr>
 <br>
-
-{% for video in visi_video %}
-<h3>{{video[1]}}</h3> <!-- pavadinimas -->
+{%for i in visi_video%}
+<div class="row">
+	<div class="col" align="center">
+<iframe align="center" src="https://www.youtube.com/embed/{{i[1]}}" allowfullscreen="" width="700px" height="400px" frameborder="0">Video</iframe>
+	</div>
+</div>
 <br>
 <hr>
-
-{% endfor %}
+{%endfor%}
 {%endblock videos%}
