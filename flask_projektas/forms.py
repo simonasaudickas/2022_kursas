@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, BooleanField, PasswordField
+from wtforms import StringField, TextAreaField, SubmitField, BooleanField, PasswordField, SelectField
 from wtforms.validators import DataRequired, Length, Email, ValidationError, EqualTo
 
 
@@ -48,5 +48,7 @@ class PicosUzsakymoForma(FlaskForm):
     submit = SubmitField('Uzsakyti')
 
 class VideoUploadForma(FlaskForm):
+    pasirinkimo_variantai = ["muzika", "programavimas", "kita"]
     code = StringField("Kodas", [DataRequired()])
+    video_tipai = SelectField(u'Pasirinkti', choices=pasirinkimo_variantai, validators=[DataRequired()])
     submit = SubmitField('Irasyti')
